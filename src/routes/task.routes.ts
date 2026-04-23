@@ -4,6 +4,7 @@ import {
   getTasks,
   updateTaskStatus,
   updateTask,
+  deleteTask
 } from "../controllers/tasks.controller.ts";
 
 import { protect } from "../middleware/auth.middleware.ts";
@@ -15,6 +16,7 @@ const router = express.Router();
 router.post("/", protect, allowRoles("owner"), createTask);
 router.get("/", protect, getTasks);
 router.patch("/:id", protect, allowRoles("owner"), updateTask);
+router.delete("/:id", protect, deleteTask);
 
 // Developer
 router.patch(

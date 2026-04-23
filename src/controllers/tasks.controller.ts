@@ -94,3 +94,24 @@ export const updateTask = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+
+// ✅ DELETE TASK (Owner)
+export const deleteTask = async (req, res) => {
+  try {
+    const task = await Task.findById(req.params.id);
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    // only owner can delete (or use createdBy check if you prefer)
+    if (req.user.role !== "owner") {
+      return res.status(403).json({ message: "Not allowed" });
+    }
+
+    await task.deleteOne();
+    res.status(200).json({ message: "Task deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

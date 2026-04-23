@@ -7,6 +7,8 @@ import {
 
 import { protect } from "../middleware/auth.middleware.ts";
 import { allowRoles } from "../middleware/role.middleware.ts";
+ 
+import { deleteSubmission } from "../controllers/submission.controller.ts";
 
 const router = express.Router();
 
@@ -18,5 +20,8 @@ router.get("/", protect, getSubmissions);
 
 // Update
 router.patch("/:id", protect, updateSubmission);
+
+//delete submission (owner only)
+ router.delete("/:id", protect, deleteSubmission);
 
 export default router;

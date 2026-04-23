@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import bcrypt from "bcryptjs";
 
 // ✅ GET ALL USERS (Owner only)
 export const getUsers = async (req, res) => {
@@ -12,26 +13,40 @@ export const getUsers = async (req, res) => {
 };
 
 // ✅ CREATE USER (Owner creates dev/caller/bidder)
+
+ 
+
 export const createUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
 
-    const exists = await User.findOne({ email });
+    if (!name || !email || !password || !role) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+
+    const exists = await User.findOne({ email: normalizedEmail });
     if (exists) {
       return res.status(400).json({ message: "User already exists" });
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const user = await User.create({
-      name,
-      email,
-      password, // ⚠️ we will hash in next step (important)
+      name: name.trim(),
+      email: normalizedEmail,
+      password: hashedPassword,
       role,
+      status: "active",
     });
 
     res.status(201).json({
       id: user._id,
       name: user.name,
+      email: user.email,
       role: user.role,
+      status: user.status,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -54,6 +69,28 @@ export const updateUser = async (req, res) => {
     await user.save();
 
     res.json({ message: "User updated", user });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// ✅ DELETE USER (Owner only)
+export const deleteUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Optional safety: prevent deleting owner accounts
+    if (user.role === "owner") {
+      return res.status(403).json({ message: "Owner account cannot be deleted" });
+    }
+
+    await user.deleteOne();
+
+    res.json({ message: "User deleted successfully" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

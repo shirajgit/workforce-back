@@ -12,6 +12,7 @@ import http from "http";
 import { Server } from "socket.io";
 import { initChatSocket } from "./sockets/chat.socket.ts";
 import messageRoutes from "./routes/message.routes.ts";
+import submissionRoutes from "./routes/submission.routes.ts";
 
 dotenv.config();
 
@@ -42,6 +43,8 @@ app.get("/", (req, res) => {
 app.use("/api/messages", messageRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+
+app.use("/api/submissions", submissionRoutes);
 
 app.use("/api/tasks", taskRoutes);
 app.use("/api/interviews", interviewRoutes);

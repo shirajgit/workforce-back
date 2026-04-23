@@ -65,3 +65,26 @@ export const updateSubmission = async (req: any, res: any) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+// DELETE
+export const deleteSubmission = async (req: any, res: any) => {
+  try {
+    const submission = await Submission.findById(req.params.id);
+    if (!submission) {
+      return res.status(404).json({ message: "Submission not found" });
+    }
+
+    // owner can delete any, bidder can delete own
+    if (
+      req.user.role !== "owner" &&
+      submission.userId.toString() !== req.user._id.toString()
+    ) {
+      return res.status(403).json({ message: "Not allowed" });
+    }
+
+    await submission.deleteOne();
+    res.json({ message: "Submission deleted successfully" });
+  } catch (err: any) {
+    res.status(500).json({ message: err.message });
+  }
+};
