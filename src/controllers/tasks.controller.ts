@@ -3,7 +3,7 @@ import User from "../models/User.js";
 
 
 // ✅ CREATE TASK (Owner only)
-export const createTask = async (req, res) => {
+export const createTask = async ({req, res} : {req: any, res: any}) => {
   try {
     const { title, description, assignedTo, deadline } = req.body;
 
@@ -22,14 +22,14 @@ export const createTask = async (req, res) => {
     });
 
     res.status(201).json(task);
-  } catch (err) {
+  } catch (err : any  ) {
     res.status(500).json({ message: err.message });
   }
 };
 
 
 // ✅ GET TASKS (Role based)
-export const getTasks = async (req, res) => {
+export const getTasks = async ({req, res} : {req: any, res: any}) => {
   try {
     let tasks;
 
@@ -41,14 +41,14 @@ export const getTasks = async (req, res) => {
     }
 
     res.json(tasks);
-  } catch (err) {
+  } catch (err : any) {
     res.status(500).json({ message: err.message });
   }
 };
 
 
 // ✅ UPDATE TASK STATUS (Developer)
-export const updateTaskStatus = async (req, res) => {
+export const updateTaskStatus = async ({req, res} : {req: any, res: any}) => {
   try {
     const { status } = req.body;
 
@@ -66,14 +66,14 @@ export const updateTaskStatus = async (req, res) => {
     await task.save();
 
     res.json(task);
-  } catch (err) {
+  } catch (err : any) {
     res.status(500).json({ message: err.message });
   }
 };
 
 
 // ✅ UPDATE TASK (Owner)
-export const updateTask = async (req, res) => {
+export const updateTask = async ({req, res} : {req: any, res: any}) => {
   try {
     const { title, description, deadline, assignedTo } = req.body;
 
@@ -90,14 +90,14 @@ export const updateTask = async (req, res) => {
     await task.save();
 
     res.json(task);
-  } catch (err) {
+  } catch (err : any) {
     res.status(500).json({ message: err.message });
   }
 };
 
 
 // ✅ DELETE TASK (Owner)
-export const deleteTask = async (req, res) => {
+export const deleteTask = async ({req, res} : {req: any, res: any}) => {
   try {
     const task = await Task.findById(req.params.id);
     if (!task) {
@@ -111,7 +111,7 @@ export const deleteTask = async (req, res) => {
 
     await task.deleteOne();
     res.status(200).json({ message: "Task deleted successfully" });
-  } catch (err) {
+  } catch (err : any) {
     res.status(500).json({ message: err.message });
   }
 };

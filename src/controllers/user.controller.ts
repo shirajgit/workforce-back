@@ -2,12 +2,12 @@ import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 
 // ✅ GET ALL USERS (Owner only)
-export const getUsers = async (req, res) => {
+export const getUsers = async ({req, res} : {req: any, res: any}) => {
   try {
     const users = await User.find().select("-password");
 
     res.json(users);
-  } catch (err) {
+  } catch (err : any) {
     res.status(500).json({ message: err.message });
   }
 };
@@ -16,7 +16,7 @@ export const getUsers = async (req, res) => {
 
  
 
-export const createUser = async (req, res) => {
+export const createUser = async ({req, res} : {req: any, res: any}) => {
   try {
     const { name, email, password, role } = req.body;
 
@@ -48,13 +48,13 @@ export const createUser = async (req, res) => {
       role: user.role,
       status: user.status,
     });
-  } catch (err) {
+  } catch (err : any) {
     res.status(500).json({ message: err.message });
   }
 };
 
 // ✅ UPDATE USER (role / status)
-export const updateUser = async (req, res) => {
+export const updateUser = async ({req, res} : {req: any, res: any}) => {
   try {
     const { role, status } = req.body;
 
@@ -69,13 +69,13 @@ export const updateUser = async (req, res) => {
     await user.save();
 
     res.json({ message: "User updated", user });
-  } catch (err) {
+  } catch (err : any) {
     res.status(500).json({ message: err.message });
   }
 };
 
 // ✅ DELETE USER (Owner only)
-export const deleteUser = async (req, res) => {
+export const deleteUser = async ({req, res} : {req: any, res: any}) => {
   try {
     const user = await User.findById(req.params.id);
 
@@ -91,7 +91,7 @@ export const deleteUser = async (req, res) => {
     await user.deleteOne();
 
     res.json({ message: "User deleted successfully" });
-  } catch (err) {
+  } catch (err : any) {
     res.status(500).json({ message: err.message });
   }
 };
