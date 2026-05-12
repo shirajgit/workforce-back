@@ -7,7 +7,6 @@ export const protect = async (
   next: any
 ) => {
   try {
-    // ✅ Get token
     const token = req.headers.authorization?.split(" ")[1];
 
     if (!token) {
@@ -16,27 +15,17 @@ export const protect = async (
       });
     }
 
-    // ✅ Check JWT secret
     if (!process.env.JWT_SECRET) {
       return res.status(500).json({
         message: "JWT_SECRET missing",
       });
     }
 
-    // ✅ Verify token
     const decoded: any = jwt.verify(
       token,
       process.env.JWT_SECRET
     );
 
-    // ✅ Invalid token
-    if (!decoded?.id) {
-      return res.status(401).json({
-        message: "Invalid token",
-      });
-    }
-
-    // ✅ Get user
     const user = await User.findById(decoded.id).select("-password");
 
     if (!user) {
@@ -45,12 +34,11 @@ export const protect = async (
       });
     }
 
-    // ✅ Attach user
     req.user = user;
 
     next();
   } catch (err) {
-    console.error("Authentication error:", err);
+    console.error(err);
 
     return res.status(401).json({
       message: "Invalid token",

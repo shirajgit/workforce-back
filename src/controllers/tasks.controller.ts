@@ -1,16 +1,26 @@
 import Task from "../models/Tasks.ts";
 import User from "../models/User.js";
 
-
-// ✅ CREATE TASK (Owner only)
-export const createTask = async ({req, res} : {req: any, res: any}) => {
+// ✅ CREATE TASK
+export const createTask = async (
+  req: any,
+  res: any
+) => {
   try {
-    const { title, description, assignedTo, deadline } = req.body;
+    const {
+      title,
+      description,
+      assignedTo,
+      deadline,
+    } = req.body;
 
-    // check if user exists
+    // ✅ Check user exists
     const user = await User.findById(assignedTo);
+
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({
+        message: "User not found",
+      });
     }
 
     const task = await Task.create({
@@ -22,64 +32,103 @@ export const createTask = async ({req, res} : {req: any, res: any}) => {
     });
 
     res.status(201).json(task);
-  } catch (err : any  ) {
-    res.status(500).json({ message: err.message });
+  } catch (err: any) {
+    console.error(err);
+
+    res.status(500).json({
+      message: err.message,
+    });
   }
 };
 
-
-// ✅ GET TASKS (Role based)
-export const getTasks = async ({req, res} : {req: any, res: any}) => {
+// ✅ GET TASKS
+export const getTasks = async (
+  req: any,
+  res: any
+) => {
   try {
     let tasks;
 
+    // ✅ Owner sees all
     if (req.user.role === "owner") {
-      tasks = await Task.find().populate("assignedTo", "name email");
+      tasks = await Task.find()
+        .populate("assignedTo", "name email");
     } else {
-      // developer sees only their tasks
-      tasks = await Task.find({ assignedTo: req.user._id });
+      // ✅ Developer sees own tasks
+      tasks = await Task.find({
+        assignedTo: req.user._id,
+      });
     }
 
     res.json(tasks);
-  } catch (err : any) {
-    res.status(500).json({ message: err.message });
+  } catch (err: any) {
+    console.error(err);
+
+    res.status(500).json({
+      message: err.message,
+    });
   }
 };
 
-
-// ✅ UPDATE TASK STATUS (Developer)
-export const updateTaskStatus = async ({req, res} : {req: any, res: any}) => {
+// ✅ UPDATE TASK STATUS
+export const updateTaskStatus = async (
+  req: any,
+  res: any
+) => {
   try {
     const { status } = req.body;
 
     const task = await Task.findById(req.params.id);
+
     if (!task) {
-      return res.status(404).json({ message: "Task not found" });
+      return res.status(404).json({
+        message: "Task not found",
+      });
     }
 
-    // only assigned user can update
-    if (task.assignedTo.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ message: "Not allowed" });
+    // ✅ Only assigned developer
+    if (
+      task.assignedTo.toString() !==
+      req.user._id.toString()
+    ) {
+      return res.status(403).json({
+        message: "Not allowed",
+      });
     }
 
     task.status = status;
+
     await task.save();
 
     res.json(task);
-  } catch (err : any) {
-    res.status(500).json({ message: err.message });
+  } catch (err: any) {
+    console.error(err);
+
+    res.status(500).json({
+      message: err.message,
+    });
   }
 };
 
-
-// ✅ UPDATE TASK (Owner)
-export const updateTask = async ({req, res} : {req: any, res: any}) => {
+// ✅ UPDATE TASK
+export const updateTask = async (
+  req: any,
+  res: any
+) => {
   try {
-    const { title, description, deadline, assignedTo } = req.body;
+    const {
+      title,
+      description,
+      deadline,
+      assignedTo,
+    } = req.body;
 
     const task = await Task.findById(req.params.id);
+
     if (!task) {
-      return res.status(404).json({ message: "Task not found" });
+      return res.status(404).json({
+        message: "Task not found",
+      });
     }
 
     if (title) task.title = title;
@@ -90,28 +139,46 @@ export const updateTask = async ({req, res} : {req: any, res: any}) => {
     await task.save();
 
     res.json(task);
-  } catch (err : any) {
-    res.status(500).json({ message: err.message });
+  } catch (err: any) {
+    console.error(err);
+
+    res.status(500).json({
+      message: err.message,
+    });
   }
 };
 
-
-// ✅ DELETE TASK (Owner)
-export const deleteTask = async ({req, res} : {req: any, res: any}) => {
+// ✅ DELETE TASK
+export const deleteTask = async (
+  req: any,
+  res: any
+) => {
   try {
     const task = await Task.findById(req.params.id);
+
     if (!task) {
-      return res.status(404).json({ message: "Task not found" });
+      return res.status(404).json({
+        message: "Task not found",
+      });
     }
 
-    // only owner can delete (or use createdBy check if you prefer)
+    // ✅ Only owner
     if (req.user.role !== "owner") {
-      return res.status(403).json({ message: "Not allowed" });
+      return res.status(403).json({
+        message: "Not allowed",
+      });
     }
 
     await task.deleteOne();
-    res.status(200).json({ message: "Task deleted successfully" });
-  } catch (err : any) {
-    res.status(500).json({ message: err.message });
+
+    res.status(200).json({
+      message: "Task deleted successfully",
+    });
+  } catch (err: any) {
+    console.error(err);
+
+    res.status(500).json({
+      message: err.message,
+    });
   }
 };
