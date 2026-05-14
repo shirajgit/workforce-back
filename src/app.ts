@@ -9,29 +9,12 @@ import dashboardRoutes from "./routes/dashboard.routes.js";
 import interviewRoutes from "./routes/interview.routes.js";
 import paymentRoutes from "./routes/payment.routes.js";
 import http from "http";
-import { Server } from "socket.io";
-import { initChatSocket } from "./sockets/chat.socket.js";
 import messageRoutes from "./routes/message.routes.js";
 import submissionRoutes from "./routes/submission.routes.js";
 
 dotenv.config();
 
 const app = express();
-const server = http.createServer(app);
-
-
-
-const io = new Server(server, {
-  cors: {
-    origin: "*",
-  },
-});
-
-// init socket
-initChatSocket(io);
-
-
-
 
 app.use(cors());
 app.use(express.json());
