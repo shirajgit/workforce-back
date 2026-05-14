@@ -1,6 +1,6 @@
 
-import Payment from "../models/payment.model.ts";
-import { calculateBonus } from "../utils/salary.util.ts";
+import Payment from "../models/payment.model.js";
+import { calculateBonus } from "../utils/salary.util.js";
 
 // ➕ CREATE PAYMENT
 export const createPayment = async (req: any, res: any) => {

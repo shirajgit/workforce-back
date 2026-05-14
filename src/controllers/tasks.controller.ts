@@ -1,4 +1,4 @@
-import Task from "../models/Tasks.ts";
+import Task from "../models/Tasks.js";
 import User from "../models/User.js";
 
 // ✅ CREATE TASK

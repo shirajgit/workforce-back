@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import messageModel from "../models/message.model.ts";
+import messageModel from "../models/message.model.js";
 
 
 interface IUserSocketMap {

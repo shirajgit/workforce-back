@@ -5,9 +5,9 @@ import {
   advanceStage,
   updateInterview,
   deleteInterview,
-} from "../controllers/interview.controller.ts";
+} from "../controllers/interview.controller.js";
 
-import { protect } from "../middleware/auth.middleware.ts";
+import { protect } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 

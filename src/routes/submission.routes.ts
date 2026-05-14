@@ -3,12 +3,12 @@ import {
   createSubmission,
   getSubmissions,
   updateSubmission,
-} from "../controllers/submission.controller.ts";
+} from "../controllers/submission.controller.js";
 
-import { protect } from "../middleware/auth.middleware.ts";
-import { allowRoles } from "../middleware/role.middleware.ts";
+import { protect } from "../middleware/auth.middleware.js";
+import { allowRoles } from "../middleware/role.middleware.js";
  
-import { deleteSubmission } from "../controllers/submission.controller.ts";
+import { deleteSubmission } from "../controllers/submission.controller.js";
 
 const router = express.Router();
 

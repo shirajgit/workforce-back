@@ -1,4 +1,4 @@
-import Submission from "../models/Submission.ts";
+import Submission from "../models/Submission.js";
 
 // CREATE
 export const createSubmission = async (req: any, res: any) => {

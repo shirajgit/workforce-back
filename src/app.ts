@@ -3,16 +3,16 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import authRoutes from "./routes/auth.routes.js";
-import userRoutes from "./routes/user.routes.ts";
-import taskRoutes from "./routes/task.routes.ts";
+import userRoutes from "./routes/user.routes.js";
+import taskRoutes from "./routes/task.routes.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
-import interviewRoutes from "./routes/interview.routes.ts";
-import paymentRoutes from "./routes/payment.routes.ts";
+import interviewRoutes from "./routes/interview.routes.js";
+import paymentRoutes from "./routes/payment.routes.js";
 import http from "http";
 import { Server } from "socket.io";
-import { initChatSocket } from "./sockets/chat.socket.ts";
-import messageRoutes from "./routes/message.routes.ts";
-import submissionRoutes from "./routes/submission.routes.ts";
+import { initChatSocket } from "./sockets/chat.socket.js";
+import messageRoutes from "./routes/message.routes.js";
+import submissionRoutes from "./routes/submission.routes.js";
 
 dotenv.config();
 

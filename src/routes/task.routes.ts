@@ -5,10 +5,10 @@ import {
   updateTaskStatus,
   updateTask,
   deleteTask
-} from "../controllers/tasks.controller.ts";
+} from "../controllers/tasks.controller.js";
 
-import { protect } from "../middleware/auth.middleware.ts";
-import { allowRoles } from "../middleware/role.middleware.ts";
+import { protect } from "../middleware/auth.middleware.js";
+import { allowRoles } from "../middleware/role.middleware.js";
 
 const router = express.Router();
 

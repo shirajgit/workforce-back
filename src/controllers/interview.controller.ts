@@ -1,5 +1,5 @@
 
-import Interview from "../models/interview.model.ts";
+import Interview from "../models/interview.model.js";
 
 // ➕ CREATE
 export const createInterview = async (req: any, res: any) => {

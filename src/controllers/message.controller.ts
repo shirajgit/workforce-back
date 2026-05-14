@@ -1,5 +1,5 @@
 
-import Message from "../models/message.model.ts";
+import Message from "../models/message.model.js";
 
 // 📥 GET CHAT BETWEEN TWO USERS
 export const getMessages = async (req: any, res: any) => {

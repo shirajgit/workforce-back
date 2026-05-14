@@ -5,9 +5,9 @@ import {
   markAsPaid,
   updatePayment,
   deletePayment,
-} from "../controllers/payment.controller.ts";
+} from "../controllers/payment.controller.js";
 
-import { protect } from "../middleware/auth.middleware.ts";
+import { protect } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 

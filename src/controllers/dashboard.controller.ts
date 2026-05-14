@@ -1,5 +1,5 @@
 import User from "../models/User.js";
-import Task from "../models/Tasks.ts";
+import Task from "../models/Tasks.js";
 
 // ✅ GET DASHBOARD STATS (Owner only)
 export const getDashboardStats = async (req, res) => {
